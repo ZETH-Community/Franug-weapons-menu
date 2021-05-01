@@ -23,7 +23,7 @@
 #include <zombiereloaded>
 #include <clientprefs>
 
-#define VERSION "3.2"
+#define VERSION "3.3 - CSS Edition"
 
 #pragma newdecls required
 
@@ -53,16 +53,12 @@ char g_sSecondaryWeapon[MAXPLAYERS + 1][24];
 
 ConVar g_cSmoke;
 ConVar g_cHeGrenade;
-ConVar g_cDecoy;
-ConVar g_cMolotov;
 ConVar g_cFlash;
 
 ConVar g_cFlags;
 
 ConVar g_cSmoke_Vip;
 ConVar g_cHeGrenade_Vip;
-ConVar g_cDecoy_Vip;
-ConVar g_cMolotov_Vip;
 ConVar g_cFlash_Vip;
 
 
@@ -86,7 +82,7 @@ Handle g_hWeapons2 = INVALID_HANDLE;
 public Plugin myinfo = 
 {
 	name = "SM Franug Weapons", 
-	author = "Franc1sco franug & good_live", 
+	author = "Franc1sco franug & good_live & Oylsister", 
 	description = "", 
 	version = VERSION, 
 	url = "http://steamcommunity.com/id/franug"
@@ -115,16 +111,12 @@ public void OnPluginStart()
 	
 	g_cSmoke = CreateConVar("sm_zeusweapons_smoke", "1", "Number of smoke");
 	g_cHeGrenade = CreateConVar("sm_zeusweapons_hegrenade", "1", "Number of hegrenade");
-	g_cDecoy = CreateConVar("sm_zeusweapons_decoy", "0", "Number of decoy");
-	g_cMolotov = CreateConVar("sm_zeusweapons_molotov", "0", "Number of molotov");
 	g_cFlash = CreateConVar("sm_zeusweapons_flash", "0", "Number of flashbang");
 	
 	g_cFlags = CreateConVar("sm_zeusweapons_vip_flags", "a", "One of these flags is needed to be marked as VIP");
 	
 	g_cSmoke_Vip = CreateConVar("sm_zeusweapons_smoke_vip", "1", "Number of smoke for vips");
 	g_cHeGrenade_Vip = CreateConVar("sm_zeusweapons_hegrenade_vip", "1", "Number of hegrenade for vips");
-	g_cDecoy_Vip = CreateConVar("sm_zeusweapons_decoy_vip", "0", "Number of decoy for vips");
-	g_cMolotov_Vip = CreateConVar("sm_zeusweapons_molotov_vip", "0", "Number of molotov for vips");
 	g_cFlash_Vip = CreateConVar("sm_zeusweapons_flash_vip", "0", "Number of flashbang for vips");
 	
 	LoadTranslations("franug_weapons.phrases");
@@ -453,16 +445,6 @@ void GiveSavedWeapons(int client)
 				GivePlayerItem(client, "weapon_hegrenade");
 				SetEntProp(client, Prop_Send, "m_iAmmo", g_cHeGrenade.IntValue, _, g_iaGrenadeOffsets[NADE_HE]);
 			}
-			if (g_cDecoy.IntValue > 0)
-			{
-				GivePlayerItem(client, "weapon_decoy");
-				SetEntProp(client, Prop_Send, "m_iAmmo", g_cDecoy.IntValue, _, g_iaGrenadeOffsets[NADE_DECOY]);
-			}
-			if (g_cMolotov.IntValue > 0)
-			{
-				GivePlayerItem(client, "weapon_molotov");
-				SetEntProp(client, Prop_Send, "m_iAmmo", g_cMolotov.IntValue, _, g_iaGrenadeOffsets[NADE_MOLOTOV]);
-			}
 			if (g_cSmoke.IntValue > 0)
 			{
 				GivePlayerItem(client, "weapon_smokegrenade");
@@ -478,16 +460,6 @@ void GiveSavedWeapons(int client)
 			{
 				GivePlayerItem(client, "weapon_hegrenade");
 				SetEntProp(client, Prop_Send, "m_iAmmo", g_cHeGrenade_Vip.IntValue, _, g_iaGrenadeOffsets[NADE_HE]);
-			}
-			if (g_cDecoy_Vip.IntValue > 0)
-			{
-				GivePlayerItem(client, "weapon_decoy");
-				SetEntProp(client, Prop_Send, "m_iAmmo", g_cDecoy_Vip.IntValue, _, g_iaGrenadeOffsets[NADE_DECOY]);
-			}
-			if (g_cMolotov_Vip.IntValue > 0)
-			{
-				GivePlayerItem(client, "weapon_molotov");
-				SetEntProp(client, Prop_Send, "m_iAmmo", g_cMolotov_Vip.IntValue, _, g_iaGrenadeOffsets[NADE_MOLOTOV]);
 			}
 			if (g_cSmoke_Vip.IntValue > 0)
 			{
@@ -589,24 +561,16 @@ void ListWeapons()
 	
 	int Items[Weapons];
 	
-	Format(Items[number], 64, "weapon_negev");
-	Format(Items[desc], 64, "Negev");
-	g_aPrimary.PushArray(Items[0]);
-	
 	Format(Items[number], 64, "weapon_m249");
 	Format(Items[desc], 64, "M249");
-	g_aPrimary.PushArray(Items[0]);
-	
-	Format(Items[number], 64, "weapon_bizon");
-	Format(Items[desc], 64, "PP-Bizon");
 	g_aPrimary.PushArray(Items[0]);
 	
 	Format(Items[number], 64, "weapon_p90");
 	Format(Items[desc], 64, "P90");
 	g_aPrimary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_scar20");
-	Format(Items[desc], 64, "SCAR-20");
+	Format(Items[number], 64, "weapon_sg550");
+	Format(Items[desc], 64, "SG550");
 	g_aPrimary.PushArray(Items[0]);
 	
 	Format(Items[number], 64, "weapon_g3sg1");
@@ -617,10 +581,6 @@ void ListWeapons()
 	Format(Items[desc], 64, "M4A1");
 	g_aPrimary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_m4a1_silencer");
-	Format(Items[desc], 64, "M4A1-S");
-	g_aPrimary.PushArray(Items[0]);
-	
 	Format(Items[number], 64, "weapon_ak47");
 	Format(Items[desc], 64, "AK-47");
 	g_aPrimary.PushArray(Items[0]);
@@ -629,7 +589,7 @@ void ListWeapons()
 	Format(Items[desc], 64, "AUG");
 	g_aPrimary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_galilar");
+	Format(Items[number], 64, "weapon_galil");
 	Format(Items[desc], 64, "Galil AR");
 	g_aPrimary.PushArray(Items[0]);
 	
@@ -637,15 +597,15 @@ void ListWeapons()
 	Format(Items[desc], 64, "AWP");
 	g_aPrimary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_sg556");
-	Format(Items[desc], 64, "SG 553");
+	Format(Items[number], 64, "weapon_sg552");
+	Format(Items[desc], 64, "SG 552");
 	g_aPrimary.PushArray(Items[0]);
 	
 	Format(Items[number], 64, "weapon_ump45");
 	Format(Items[desc], 64, "UMP-45");
 	g_aPrimary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_mp7");
+	Format(Items[number], 64, "weapon_mp5navy");
 	Format(Items[desc], 64, "MP7");
 	g_aPrimary.PushArray(Items[0]);
 	
@@ -653,35 +613,25 @@ void ListWeapons()
 	Format(Items[desc], 64, "FAMAS");
 	g_aPrimary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_mp9");
-	Format(Items[desc], 64, "MP9");
+	Format(Items[number], 64, "weapon_tmp");
+	Format(Items[desc], 64, "TMP");
 	g_aPrimary.PushArray(Items[0]);
 	
 	Format(Items[number], 64, "weapon_mac10");
 	Format(Items[desc], 64, "MAC-10");
 	g_aPrimary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_ssg08");
-	Format(Items[desc], 64, "SSG 08");
+	Format(Items[number], 64, "weapon_scout");
+	Format(Items[desc], 64, "Scout");
 	g_aPrimary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_nova");
-	Format(Items[desc], 64, "Nova");
+	Format(Items[number], 64, "weapon_m3");
+	Format(Items[desc], 64, "M3");
 	g_aPrimary.PushArray(Items[0]);
 	
 	Format(Items[number], 64, "weapon_xm1014");
 	Format(Items[desc], 64, "XM1014");
 	g_aPrimary.PushArray(Items[0]);
-	
-	Format(Items[number], 64, "weapon_sawedoff");
-	Format(Items[desc], 64, "Sawed-Off");
-	g_aPrimary.PushArray(Items[0]);
-	
-	Format(Items[number], 64, "weapon_mag7");
-	Format(Items[desc], 64, "MAG-7");
-	g_aPrimary.PushArray(Items[0]);
-	
-	
 	
 	// Secondary weapons
 	Format(Items[number], 64, "weapon_elite");
@@ -692,36 +642,20 @@ void ListWeapons()
 	Format(Items[desc], 64, "Desert Eagle");
 	g_aSecoundary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_tec9");
-	Format(Items[desc], 64, "Tec-9");
-	g_aSecoundary.PushArray(Items[0]);
-	
 	Format(Items[number], 64, "weapon_fiveseven");
 	Format(Items[desc], 64, "Five-SeveN");
-	g_aSecoundary.PushArray(Items[0]);
-	
-	Format(Items[number], 64, "weapon_cz75a");
-	Format(Items[desc], 64, "CZ75-Auto");
 	g_aSecoundary.PushArray(Items[0]);
 	
 	Format(Items[number], 64, "weapon_glock");
 	Format(Items[desc], 64, "Glock-18");
 	g_aSecoundary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_usp_silencer");
+	Format(Items[number], 64, "weapon_usp");
 	Format(Items[desc], 64, "USP-S");
 	g_aSecoundary.PushArray(Items[0]);
 	
-	Format(Items[number], 64, "weapon_p250");
-	Format(Items[desc], 64, "P250");
-	g_aSecoundary.PushArray(Items[0]);
-	
-	Format(Items[number], 64, "weapon_hkp2000");
-	Format(Items[desc], 64, "P2000");
-	g_aSecoundary.PushArray(Items[0]);
-	
-	Format(Items[number], 64, "weapon_revolver");
-	Format(Items[desc], 64, "Revolver");
+	Format(Items[number], 64, "weapon_p228");
+	Format(Items[desc], 64, "P228");
 	g_aSecoundary.PushArray(Items[0]);
 }
 
